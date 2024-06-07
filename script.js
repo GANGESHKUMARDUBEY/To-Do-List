@@ -10,7 +10,7 @@ const displayCount = (taskCount) => {
 };
 
 const addTask = () => {
-    const taskName = newTaskInput.value.trim(); // Changed 'Value' to 'value'
+    const taskName = newTaskInput.value.trim();
     error.style.display = "none";
     if (!taskName) {
         setTimeout(() => {
@@ -35,8 +35,13 @@ const addTask = () => {
     const deleteButtons = document.querySelectorAll(".delete");
     deleteButtons.forEach((button) => {
         button.onclick = () => {
-            button.parentNode.remove();
-            taskCount -= 1;
+            const taskElement = button.parentNode;
+            const checkBox = taskElement.querySelector(".task-check");
+
+            if (!checkBox.checked) {
+                taskCount -= 1;
+            }
+            taskElement.remove();
             displayCount(taskCount);
         };
     });
@@ -48,9 +53,14 @@ const addTask = () => {
             if (!(e.target.className === "edit")) {
                 targetElement = e.target.parentElement;
             }
-            newTaskInput.value = targetElement.previousElementSibling?.innerText; // Changed 'Value' to 'value'
-            targetElement.parentNode.remove();
-            taskCount -= 1;
+            newTaskInput.value = targetElement.previousElementSibling?.innerText;
+            const taskElement = targetElement.parentNode;
+            const checkBox = taskElement.querySelector(".task-check");
+
+            if (!checkBox.checked) {
+                taskCount -= 1;
+            }
+            taskElement.remove();
             displayCount(taskCount);
         };
     });
@@ -84,5 +94,3 @@ window.onload = () => {
     displayCount(taskCount);
     newTaskInput.value = "";
 };
-
- 
